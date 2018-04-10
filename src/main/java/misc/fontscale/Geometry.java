@@ -57,6 +57,9 @@ public class Geometry {
 
     private int transformPoint(int val, int oldSize, int newSize) {
         // Linear interpolation: 0 => 0, (oldWidth - 1) => (newWidth - 1).
+        if(oldSize == 1) {
+            return 0;
+        }
         return (int)(val * (newSize - 1) / (oldSize - 1));
     }
 }
