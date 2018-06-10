@@ -6,11 +6,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import javax.xml.bind.DatatypeConverter;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 
 public class RasterGlyph implements Cloneable {
     public static RasterGlyph fromUnifontHex(final String hex) {
-        final byte[] content = DatatypeConverter.parseHexBinary(hex);
+        byte[] content;
+        try {
+            content = Hex.decodeHex(hex.toCharArray());
+        } catch (DecoderException e) {
+            // Re-throw unchecked
+            throw new RuntimeException(e);
+        }
         final int height = 16;
         final int width = (content.length * 8) / height;
         final boolean[][] data = new boolean[height][width];
